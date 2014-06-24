@@ -22,8 +22,14 @@ tests begin to non-local Internet resources.  It does not require any modules
 beyond those supplied in core Perl.
 
 If you do not specify a host/port pair, then the module defaults to using
-C<www.google.com> on port C<80>.  If you do specify a host and port, they 
-must be specified in B<pairs>. It is a fatal error to omit one or the other.
+C<www.google.com> on port C<80>.  
+
+You may optionally specify the port by its name, as in C<http> or C<ldap>.
+If you do this, the test module will attempt to look up the port number
+using C<getservbyname>.
+
+If you do specify a host and port, they must be specified in B<pairs>. It is a
+fatal error to omit one or the other.
 
 If the environment variable C<NO_NETWORK_TESTING> is set, then the tests
 will be skipped without attempting any socket connections.
@@ -38,22 +44,23 @@ use Socket;
 sub import {
     skip_all("NO_NETWORK_TESTING") if env("NO_NETWORK_TESTING");
 
+    my $namespace = shift;
+
     my $argc = scalar @_;
     if ( $argc == 0 ) {
         push @_, 'www.google.com', 80;
     }
     elsif ( $argc % 2 != 0 ) {
-        die "Must supply a server and a port. You supplied " . join ", ", @_ . "\n";
+        die "Must supply server and a port pairs. You supplied " . (join ", ", @_) . "\n";
     }
 
-    my %svrs = { @_ };
-
-    foreach my $host ( @_ ) {
+    while ( @_ ) {
+        my $host = shift;
         my $port = shift;
 
         local $@;
 
-        eval "make_socket($host, $port)";
+        eval {make_socket($host, $port)};
 
         if ( $@ ) {
             skip_all("$@");
@@ -64,17 +71,24 @@ sub import {
 sub make_socket {
     my ($host, $port) = @_;
 
-    if ($port =~ /\D/) { $port = getservbyname($port, "tcp") }
-    die "Could not find a port number for $port\n" unless $port;
+    my $portnum;
+    if ($port =~ /\D/) { 
+        $portnum = getservbyname($port, "tcp");
+    }
+    else {
+        $portnum = $port;
+    }
 
-    my $iaddr = inet_aton($host) or die "no host: $host";
+    die "Could not find a port number for $port\n" if not $portnum;
+
+    my $iaddr = inet_aton($host) or die "no host: $host\n";
 
     my $paddr = sockaddr_in($port, $iaddr);
     my $proto = getprotobyname("tcp");
 
-    socket(my $sock, PF_INET, SOCK_STREAM, $proto) or die "socket: $!";
-    connect($sock, $paddr) or die "connect: $!";
-    close ($sock) or die "close: $!";
+    socket(my $sock, PF_INET, SOCK_STREAM, $proto) or die "socket: $!\n";
+    connect($sock, $paddr) or die "connect: $!\n";
+    close ($sock) or die "close: $!\n";
 
     1;
 }
