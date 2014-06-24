@@ -83,7 +83,7 @@ sub make_socket {
 
     my $iaddr = inet_aton($host) or die "no host: $host\n";
 
-    my $paddr = sockaddr_in($port, $iaddr);
+    my $paddr = sockaddr_in($portnum, $iaddr);
     my $proto = getprotobyname("tcp");
 
     socket(my $sock, PF_INET, SOCK_STREAM, $proto) or die "socket: $!\n";
