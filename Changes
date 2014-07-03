@@ -2,5 +2,10 @@ Change history for Test-RequiresInternet
 
 {{$NEXT}}
 
+0.02        2014-07-02
+            Use 'require_ok' instead of 'use_ok' so we 
+            don't run import() in environments where no
+            network is available.                        (RT #96892)
+
 0.01        2014-06-24
             Initial release
