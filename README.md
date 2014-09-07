@@ -4,7 +4,7 @@ Test::RequiresInternet - Easily test network connectivity
 
 # VERSION
 
-version 0.02
+version 0.03
 
 # SYNOPSIS
 
@@ -30,7 +30,7 @@ You may optionally specify the port by its name, as in `http` or `ldap`.
 If you do this, the test module will attempt to look up the port number
 using `getservbyname`.
 
-If you do specify a host and port, they must be specified in __pairs__. It is a
+If you do specify a host and port, they must be specified in **pairs**. It is a
 fatal error to omit one or the other.
 
 If the environment variable `NO_NETWORK_TESTING` is set, then the tests
