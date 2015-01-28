@@ -1,6 +1,6 @@
 #!perl
 
-use Test::More;
+use Test::More tests => 1;
 require Test::RequiresInternet;
 
 eval {
@@ -10,5 +10,4 @@ eval {
 diag $@;
 
 ok( $@ ? 1 : 0 );
-done_testing();
 

@@ -12,10 +12,9 @@ version 0.03
     use Test::RequiresInternet ('www.example.com' => 80, 'foobar.io' => 25);
 
     # if you reach here, sockets successfully connected to hosts/ports above
+    plan tests => 1;
 
     ok(do_that_internet_thing());
-
-    done_testing();
 
 # OVERVIEW
 
