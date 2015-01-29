@@ -2,6 +2,13 @@ Change history for Test-RequiresInternet
 
 {{$NEXT}}
 
+0.04        2015-01-29
+            2015-01-29
+	    Test::More prior to 0.88 (included with perl 5.10.1)
+	    does not support the done_testing() function.  Revert
+	    to a test plan to support older perls. Thanks to 
+	    Paul Howarth for the patch.                  (GH#2)
+
 0.03        2014-09-06
             Some Test::More instances get very cranky 
 	    when there are no "real" tests at all in

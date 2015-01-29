@@ -4,7 +4,7 @@ Test::RequiresInternet - Easily test network connectivity
 
 # VERSION
 
-version 0.03
+version 0.04
 
 # SYNOPSIS
 
