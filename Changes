@@ -1,6 +1,8 @@
 Change history for Test-RequiresInternet
 
 {{$NEXT}}
+
+0.05        2015-05-25
             Fix test error when NO_NETWORK_TESTING is set (Karen Etheridge,
             RT#101996, GH#3)
 
